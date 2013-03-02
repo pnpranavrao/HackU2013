@@ -1,7 +1,7 @@
 from flask import Flask,url_for,request
 import json
 from github.githubapi import *
-from flask import render_template
+from flask import render_template,jsonify
 app = Flask(__name__)
 
 #What do I Need to do?
@@ -45,7 +45,7 @@ def get_contents():
 #        query.post(body=message)
 #        return "Comment published" 
 
-@app.route('/fork')	
+@app.route('/createfork')	
 def create_fork():
 	#POST /repos/:owner/:repo/forks
 	user = request.args.get('user') or "yahoohackathon"
@@ -59,6 +59,36 @@ def create_fork():
 	result = query.post()
 	return json.dumps(result)
 	
+
+@app.route('/listforks')	
+def list_forks():
+	#GET /repos/:owner/:repo/forks
+	user = request.args.get('user') or "yahoohackathon"
+	#password = request.args.get('pw') or "123yahoo"
+	
+	repo = request.args.get('repo') or "requests"
+	owner = request.args.get('owner') or "kennethreitz"
+	
+	gh = GitHub(username=user)
+	query = gh.repos(owner)(repo).forks
+	result = query.get(sort="watchers")
+	
+	final_list = {}
+	i = 0
+	for fork in result:
+		if i > 5:
+			continue
+		temp_dict = {}
+		for k,v in fork.iteritems():
+			if k in ["name","watchers","owner"]:
+				if k=="owner":
+					temp_dict['owner_name'] = v['login']
+				else:
+					temp_dict[k] = v				
+		final_list[str(i)] = temp_dict
+		i = i+1
+	return jsonify(**final_list)
+
 #@app.route('/post/<int:post_id>')
 #def show_post(post_id):
 #    # show the post with the given id, the id is an integer
