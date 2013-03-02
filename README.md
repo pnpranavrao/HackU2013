@@ -14,4 +14,12 @@ Get your IP address and with port 5000, you can hit the server.
 ### Notes 
 
 * "content" above will be base 64 encoded. 
-* I am using a test github account and repo. 
+* I am using a test github account and repo.
+
+### Experimental 
+
+* The oauth.py file is a separate app which tests oauth capability. 
+* OAuth is critical, so please go through the guide on github.
+* Currently I am utilizing a flask extention to handle oauth - e.g https://github.com/mitsuhiko/flask-oauth/blob/master/example/facebook.py
+* Now it seems like doing directly without the extension is better. 
+

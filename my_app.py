@@ -1,4 +1,4 @@
-from flask import Flask 
+from flask import Flask,url_for,request
 import json
 from github.githubapi import *
 from flask import render_template
@@ -20,10 +20,13 @@ app = Flask(__name__)
 def index():
 	return "Hello World"
 	
+
 @app.route('/get')
-def get_contents(user='yahoohackathon',repo='testrepo'):
+def get_contents():
 	""" Default username is 'yahoohackathon', and default repo will be
 	'testrepo' """
+	user = request.args.get('user') or "yahoohackathon"
+	repo = request.args.get('repo') or "testrepo"
 	gh = GitHub(username=user)
 	query = gh.repos(user)(repo).readme
 	result = query.get()
@@ -34,6 +37,7 @@ def get_contents(user='yahoohackathon',repo='testrepo'):
 		if k in ["name","content"]:
 			return_dict[k] = v
 	return json.dumps(return_dict)
+	
 
 #@app.route('/post/<int:post_id>')
 #def show_post(post_id):
