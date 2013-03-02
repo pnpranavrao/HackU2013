@@ -24,7 +24,7 @@ def index():
 def get_contents(user='yahoohackathon',repo='testrepo'):
 	""" Default username is 'yahoohackathon', and default repo will be
 	'testrepo' """
-	gh = GitHub(username=user, password='123yahoo')
+	gh = GitHub(username=user)
 	query = gh.repos(user)(repo).readme
 	result = query.get()
 	

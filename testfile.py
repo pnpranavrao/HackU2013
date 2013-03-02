@@ -13,10 +13,10 @@ from github.githubapi import *
 ###Later
 #* Proper stats.
 
-def get_contents(user='yahoohackathon',repo='testrepo'):
+def get_contents(user='pnpranavrao',repo='HackU2013'):
 	""" Default username is 'yahoohackathon', and default repo will be
 	'testrepo' """
-	gh = GitHub(username=user, password='123yahoo')
+	gh = GitHub(username=user)
 	query = gh.repos(user)(repo).readme
 	result = query.get()
 	
