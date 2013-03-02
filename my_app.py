@@ -38,7 +38,27 @@ def get_contents():
 			return_dict[k] = v
 	return json.dumps(return_dict)
 	
+#@app.route('/comments')
+#def put_comment(user='pnpranavrao',repo='kivycontest',password='studio15',sha_id='836b6a7aaa814eb89e96be65daf7817f23013810',message="Hello World"):
+#        gh = GitHub(username=user,password=password)
+#        query = gh.repos(user)(repo).commits(sha_id).comments
+#        query.post(body=message)
+#        return "Comment published" 
 
+@app.route('/fork')	
+def create_fork():
+	#POST /repos/:owner/:repo/forks
+	user = request.args.get('user') or "yahoohackathon"
+	password = request.args.get('pw') or "123yahoo"
+	
+	repo = request.args.get('repo') or "kivycontest"
+	owner = request.args.get('owner') or "pnpranavrao"
+	
+	gh = GitHub(username=user,password = password)
+	query = gh.repos(owner)(repo).forks
+	result = query.post()
+	return json.dumps(result)
+	
 #@app.route('/post/<int:post_id>')
 #def show_post(post_id):
 #    # show the post with the given id, the id is an integer
