@@ -2,8 +2,10 @@ from flask import Flask,url_for,request,render_template,jsonify
 from github.githubapi import *
 import json
 import requests as r
+import base64
 
 app = Flask(__name__)
+
 #What do I Need to do?
 
 #* Authenticate the user
@@ -43,8 +45,11 @@ def get_contents():
         return_dict["user"] = user
         for k,v in result.iteritems():
                 if k in ["name","content"]:
-                        return_dict[k] = v
-        return json.dumps(return_dict)
+                	if k == "content":
+                		return_dict[k] = base64.b64decode(v)
+                	else:
+                		return_dict[k] = v
+        return jsonify(**return_dict)
         
 #@app.route('/comments')
 #def put_comment(user='pnpranavrao',repo='kivycontest',password='studio15',sha_id='836b6a7aaa814eb89e96be65daf7817f23013810',message="Hello World"):
